@@ -77,7 +77,7 @@ COVFILE=$(pwd)/ZeroMQ.cov
 COVFILE_XML=$(pwd)/ZeroMQ.cov.xml
 # ensure the directory where the monocov instrumentation library is placed is on the LD_LIBRARY_PATH
 LD_LIBRARY_PATH=${MONOCOV_LIB_DIR}:${LD_LIBRARY_PATH}
-mono --debug --profile=monocov:outfile=${COVFILE},+[ZeroMQ] ./testrunner/NUnit.ConsoleRunner.3.6.1/tools/nunit3-console.exe ./ZeroMQTest/bin/Debug/ZeroMQTest.dll
+mono --debug --profile=monocov:outfile=${COVFILE},+[ZeroMQ] ./testrunner/NUnit.ConsoleRunner.3.6.1/tools/nunit3-console.exe --process=Single ./ZeroMQTest/bin/Debug/ZeroMQTest.dll
 
 monocov --export-xml=${COVFILE_XML} ${COVFILE}
 
