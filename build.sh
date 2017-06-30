@@ -58,10 +58,10 @@ sudo make install
 # provide these at another location as recommended by http://keithnordstrom.com/getting-the-monocov-profiler-to-link-on-ubuntu-13 and add symbolic links
 if [ "$(sw_vers -productName)" == "Mac OS X" ] ; then
   MONOCOV_LIB_DIR=/usr/local/lib
-  LDD=ldd
+  LDD="otool -L"
 else
   MONOCOV_LIB_DIR=/usr/lib
-  LDD="otool -L"
+  LDD=ldd
   sudo cp /usr/local/lib/libmono-profiler-monocov.so ${MONOCOV_LIB_DIR}/libmono-profiler-monocov.so
 fi
 sudo ln -s ${MONOCOV_LIB_DIR}/libmono-profiler-monocov.so ${MONOCOV_LIB_DIR}/libmono-profiler-monocov.so.0 
