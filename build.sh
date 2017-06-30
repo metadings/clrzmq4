@@ -81,7 +81,7 @@ mono --debug --profile=monocov:outfile=${COVFILE},+[ZeroMQ] ./testrunner/NUnit.C
 
 monocov --export-xml=${COVFILE_XML} ${COVFILE}
 
-cat ${COVFILE_XML} # DEBUG
+cat ${COVFILE_XML}/* # DEBUG
 
 REPO_COMMIT_AUTHOR=$(git show -s --pretty=format:"%cn")
 REPO_COMMIT_AUTHOR_EMAIL=$(git show -s --pretty=format:"%ce")
