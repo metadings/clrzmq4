@@ -59,8 +59,7 @@ sudo make install
 sudo cp /usr/local/lib/libmono-profiler-monocov.so /usr/lib/libmono-profiler-monocov.so
 sudo ln -s /usr/lib/libmono-profiler-monocov.so /usr/lib/libmono-profiler-monocov.so.0 
 sudo ln -s /usr/lib/libmono-profiler-monocov.so.0 /usr/lib/libmono-profiler-monocov.so.0.0.0
-ls -l /usr/lib/libmono* #DEBUG
-sudo ldd /usr/lib/libmono-profile-monocov.so #DEBUG
+sudo ldd /usr/lib/libmono-profiler-monocov.so #DEBUG
 popd
 
 xbuild /p:Configuration=Debug clrzmq4.mono.sln
