@@ -36,7 +36,8 @@ fi
 nuget install NUnit.ConsoleRunner -Version 3.6.1 -OutputDirectory testrunner
 nuget install coveralls.net -Version 0.7.0 -OutputDirectory tools
 
-pushd
+pushd .
+# TODO why is mono.cecil not simple installed using nuget? this example is from https://github.com/csMACnz/Coveralls.net-Samples/blob/xunit-monocov-travisci/.travis.yml
 curl -sS https://api.nuget.org/packages/mono.cecil.0.9.5.4.nupkg > /tmp/mono.cecil.0.9.5.4.nupkg.zip
 unzip /tmp/mono.cecil.0.9.5.4.nupkg.zip -d /tmp/cecil
 cp /tmp/cecil/lib/net40/Mono.Cecil.dll .
