@@ -82,7 +82,7 @@ REPO_COMMIT_AUTHOR=$(git show -s --pretty=format:"%cn")
 REPO_COMMIT_AUTHOR_EMAIL=$(git show -s --pretty=format:"%ce")
 REPO_COMMIT_MESSAGE=$(git show -s --pretty=format:"%s")
 cd ./tools/coveralls.net.0.7.0/tools
-mono csmacnz.Coveralls.exe --monocov -i ${COVFILE_XML} --repoToken $COVERALLS_REPO_TOKEN --commitId $TRAVIS_COMMIT --commitBranch $TRAVIS_BRANCH --commitAuthor "$REPO_COMMIT_AUTHOR" --commitEmail "$REPO_COMMIT_AUTHOR_EMAIL" --commitMessage "$REPO_COMMIT_MESSAGE" --jobId $TRAVIS_JOB_ID  --serviceName travis-ci  --useRelativePaths
+mono csmacnz.Coveralls.exe --monocov -i ${COVFILE_XML} --repoTokenVariable COVERALLS_REPO_TOKEN --commitId $TRAVIS_COMMIT --commitBranch $TRAVIS_BRANCH --commitAuthor "$REPO_COMMIT_AUTHOR" --commitEmail "$REPO_COMMIT_AUTHOR_EMAIL" --commitMessage "$REPO_COMMIT_MESSAGE" --jobId $TRAVIS_JOB_ID  --serviceName travis-ci  --useRelativePaths
 
 revision=${TRAVIS_JOB_ID:=1}
 revision=$(printf "%04d" $revision)
