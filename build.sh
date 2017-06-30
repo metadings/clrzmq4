@@ -36,6 +36,7 @@ else
   sudo apt-get install gtk-sharp2
 fi
 
+nuget install Mono.Options -Version 5.3.0.1
 nuget install NUnit.ConsoleRunner -Version 3.6.1 -OutputDirectory testrunner
 nuget install coveralls.net -Version 0.7.0 -OutputDirectory tools
 
