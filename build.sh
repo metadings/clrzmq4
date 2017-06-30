@@ -53,6 +53,10 @@ cp /tmp/cecil/lib/net40/Mono.Cecil*.dll /tmp/cecil/
 git clone --depth=50 git://github.com/csMACnz/monocov.git ../../csMACnz/monocov
 cd ../../csMACnz/monocov
 cp /tmp/cecil/Mono.Cecil*.dll .
+if [ "$(sw_vers -productName)" == "Mac OS X" ] ; then
+  # mono is 32bit on MacOS X
+  export CC='gcc -m32'
+fi  
 ./configure
 make
 sudo make install
