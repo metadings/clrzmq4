@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bash -x
 
 #exit if any command fails
 set -e
@@ -29,7 +29,7 @@ if [ "$(sw_vers -productName)" == "Mac OS X" ] ; then
   find /usr/local -name '*zeromq*' # DEBUG
   
   DYLD_LIBRARY_PATH=/opt/local/lib:$DYLD_LIBRARY_PATH
-  echo LD_LIBRARY_PATH=$LD_LIBRARY_PATH
+  echo LD_LIBRARY_PATH=$LD_LIBRARY_PATH7
   echo DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH
   echo DYLD_FALLBACK_LIBRARY_PATH=$DYLD_FALLBACK_LIBRARY_PATH
 else  
