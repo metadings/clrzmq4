@@ -54,12 +54,12 @@ make
 sudo make install
 popd
 
-xbuild /p:Configuration=Release clrzmq4.mono.sln
+xbuild /p:Configuration=Debug clrzmq4.mono.sln
 
 export MONO_TRACE_LISTENER=Console.Out
 
 COVFILE=$(pwd)/ZeroMQ.cov
-MONO_OPTIONS="--profile=monocov:outfile=${COVFILE},+[ZeroMQ]" mono ./testrunner/NUnit.ConsoleRunner.3.6.1/tools/nunit3-console.exe ./ZeroMQTest/bin/Release/ZeroMQTest.dll
+MONO_OPTIONS="--debug --profile=monocov:outfile=${COVFILE},+[ZeroMQ]" mono ./testrunner/NUnit.ConsoleRunner.3.6.1/tools/nunit3-console.exe ./ZeroMQTest/bin/Debug/ZeroMQTest.dll
 
 monocov --export-xml=ZeroMQ.cov.xml ${COVFILE}
 REPO_COMMIT_AUTHOR=$(git show -s --pretty=format:"%cn")
