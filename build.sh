@@ -22,6 +22,7 @@ if [ "$(sw_vers -productName)" == "Mac OS X" ] ; then
   echo "urls http://packages.macports.org/ http://nue.de.packages.macports.org/" >>archive_sites.conf
   sudo cp archive_sites.conf /opt/local/etc/macports/
   sudo port -v install zmq +universal || true # ignore errors, since this seems to always fail with "Updating database of binaries failed"
+  sudo port -v install gtk-sharp2 || true # ignore errors, since this seems to always fail with "Updating database of binaries failed"
   file /usr/local/lib/*mq*.dylib
   file /opt/local/lib/*mq*.dylib
   find /usr/local -name '*zmq*' # DEBUG
@@ -31,6 +32,8 @@ if [ "$(sw_vers -productName)" == "Mac OS X" ] ; then
   echo LD_LIBRARY_PATH=$LD_LIBRARY_PATH
   echo DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH
   echo DYLD_FALLBACK_LIBRARY_PATH=$DYLD_FALLBACK_LIBRARY_PATH
+else  
+  sudo apt-get install gtk-sharp2
 fi
 
 nuget install NUnit.ConsoleRunner -Version 3.6.1 -OutputDirectory testrunner
