@@ -1,4 +1,7 @@
-#!/usr/bin/env bash -x
+#!/usr/bin/env bash
+
+#enable tracing
+set -x
 
 #exit if any command fails
 set -e
