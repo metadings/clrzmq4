@@ -52,6 +52,8 @@ cp /tmp/cecil/Mono.Cecil.dll .
 ./configure
 make
 sudo make install
+# strip "lib" prefix, since mono seems to search for it this way
+sudo cp /usr/local/lib/libmono-profiler-monocov.so /usr/local/lib/mono-profiler-monocov.so 
 popd
 
 xbuild /p:Configuration=Debug clrzmq4.mono.sln
