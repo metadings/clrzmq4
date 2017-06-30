@@ -58,9 +58,10 @@ xbuild /p:Configuration=Release clrzmq4.mono.sln
 
 export MONO_TRACE_LISTENER=Console.Out
 
-MONO_OPTIONS="--profile=monocov:outfile=ZeroMQ.cov,+[ZeroMQ]" mono ./testrunner/NUnit.ConsoleRunner.3.6.1/tools/nunit3-console.exe ./ZeroMQTest/bin/Release/ZeroMQTest.dll
+COVFILE=$(pwd)/ZeroMQ.cov
+MONO_OPTIONS="--profile=monocov:outfile=${COVFILE},+[ZeroMQ]" mono ./testrunner/NUnit.ConsoleRunner.3.6.1/tools/nunit3-console.exe ./ZeroMQTest/bin/Release/ZeroMQTest.dll
 
-monocov --export-xml=ZeroMQ.cov.xml ZeroMQ.cov
+monocov --export-xml=ZeroMQ.cov.xml ${COVFILE}
 REPO_COMMIT_AUTHOR=$(git show -s --pretty=format:"%cn")
 REPO_COMMIT_AUTHOR_EMAIL=$(git show -s --pretty=format:"%ce")
 REPO_COMMIT_MESSAGE=$(git show -s --pretty=format:"%s")
