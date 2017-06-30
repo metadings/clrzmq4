@@ -26,13 +26,13 @@ if [ "$(sw_vers -productName)" == "Mac OS X" ] ; then
   sudo cp archive_sites.conf /opt/local/etc/macports/
   sudo port -v install zmq +universal || true # ignore errors, since this seems to always fail with "Updating database of binaries failed"
   sudo port -v install gtk-sharp2 || true # ignore errors, since this seems to always fail with "Updating database of binaries failed"
-  file /usr/local/lib/*mq*.dylib
-  file /opt/local/lib/*mq*.dylib
+  file /usr/local/lib/*mq*.dylib # DEBUG
+  file /opt/local/lib/*mq*.dylib # DEBUG
   find /usr/local -name '*zmq*' # DEBUG
   find /usr/local -name '*zeromq*' # DEBUG
   
   DYLD_LIBRARY_PATH=/opt/local/lib:$DYLD_LIBRARY_PATH
-  echo LD_LIBRARY_PATH=$LD_LIBRARY_PATH7
+  echo LD_LIBRARY_PATH=$LD_LIBRARY_PATH
   echo DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH
   echo DYLD_FALLBACK_LIBRARY_PATH=$DYLD_FALLBACK_LIBRARY_PATH
 else  
@@ -56,10 +56,15 @@ cp /tmp/cecil/Mono.Cecil.dll .
 make
 sudo make install
 # provide these at another location as recommended by http://keithnordstrom.com/getting-the-monocov-profiler-to-link-on-ubuntu-13 and add symbolic links
-sudo cp /usr/local/lib/libmono-profiler-monocov.so /usr/lib/libmono-profiler-monocov.so
-sudo ln -s /usr/lib/libmono-profiler-monocov.so /usr/lib/libmono-profiler-monocov.so.0 
-sudo ln -s /usr/lib/libmono-profiler-monocov.so.0 /usr/lib/libmono-profiler-monocov.so.0.0.0
-sudo ldd /usr/lib/libmono-profiler-monocov.so #DEBUG
+if [ "$(sw_vers -productName)" == "Mac OS X" ] ; then
+  MONOCOV_LIB_DIR=/usr/local/lib
+else
+  MONOCOV_LIB_DIR=/usr/lib
+  sudo cp /usr/local/lib/libmono-profiler-monocov.so ${MONOCOV_LIB_DIR}/libmono-profiler-monocov.so
+fi
+sudo ln -s ${MONOCOV_LIB_DIR}/libmono-profiler-monocov.so ${MONOCOV_LIB_DIR}/libmono-profiler-monocov.so.0 
+sudo ln -s ${MONOCOV_LIB_DIR}/libmono-profiler-monocov.so.0 ${MONOCOV_LIB_DIR}/libmono-profiler-monocov.so.0.0.0
+sudo ldd ${MONOCOV_LIB_DIR}/libmono-profiler-monocov.so #DEBUG
 popd
 
 xbuild /p:Configuration=Debug clrzmq4.mono.sln
@@ -68,8 +73,8 @@ export MONO_TRACE_LISTENER=Console.Out
 
 COVFILE=$(pwd)/ZeroMQ.cov
 COVFILE_XML=$(pwd)/ZeroMQ.cov.xml
-# ensure /usr/local/lib is in the library path, this is where the monocov instrumentation library is placed
-LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH}
+# ensure the directory where the monocov instrumentation library is placed is on the LD_LIBRARY_PATH
+LD_LIBRARY_PATH=${MONOCOV_LIB_DIR}:${LD_LIBRARY_PATH}
 mono --debug --profile=monocov:outfile=${COVFILE},+[ZeroMQ] ./testrunner/NUnit.ConsoleRunner.3.6.1/tools/nunit3-console.exe ./ZeroMQTest/bin/Debug/ZeroMQTest.dll
 
 monocov --export-xml=${COVFILE_XML} ${COVFILE}
