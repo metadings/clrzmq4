@@ -67,15 +67,17 @@ xbuild /p:Configuration=Debug clrzmq4.mono.sln
 export MONO_TRACE_LISTENER=Console.Out
 
 COVFILE=$(pwd)/ZeroMQ.cov
+COVFILE_XML=$(pwd)/ZeroMQ.cov.xml
 # ensure /usr/local/lib is in the library path, this is where the monocov instrumentation library is placed
 LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH}
 mono --debug --profile=monocov:outfile=${COVFILE},+[ZeroMQ] ./testrunner/NUnit.ConsoleRunner.3.6.1/tools/nunit3-console.exe ./ZeroMQTest/bin/Debug/ZeroMQTest.dll
 
-monocov --export-xml=ZeroMQ.cov.xml ${COVFILE}
+monocov --export-xml=${COVFILE_XML} ${COVFILE}
 REPO_COMMIT_AUTHOR=$(git show -s --pretty=format:"%cn")
 REPO_COMMIT_AUTHOR_EMAIL=$(git show -s --pretty=format:"%ce")
 REPO_COMMIT_MESSAGE=$(git show -s --pretty=format:"%s")
-mono .\\tools\\coveralls.net.0.7.0\\tools\\csmacnz.Coveralls.exe --monocov -i ./ZeroMQ.cov.xml --repoToken $COVERALLS_REPO_TOKEN --commitId $TRAVIS_COMMIT --commitBranch $TRAVIS_BRANCH --commitAuthor "$REPO_COMMIT_AUTHOR" --commitEmail "$REPO_COMMIT_AUTHOR_EMAIL" --commitMessage "$REPO_COMMIT_MESSAGE" --jobId $TRAVIS_JOB_ID  --serviceName travis-ci  --useRelativePaths
+cd ./tools/coveralls.net.0.7.0/tools
+mono .\\csmacnz.Coveralls.exe --monocov -i ${COVFILE_XML} --repoToken $COVERALLS_REPO_TOKEN --commitId $TRAVIS_COMMIT --commitBranch $TRAVIS_BRANCH --commitAuthor "$REPO_COMMIT_AUTHOR" --commitEmail "$REPO_COMMIT_AUTHOR_EMAIL" --commitMessage "$REPO_COMMIT_MESSAGE" --jobId $TRAVIS_JOB_ID  --serviceName travis-ci  --useRelativePaths
 
 revision=${TRAVIS_JOB_ID:=1}
 revision=$(printf "%04d" $revision)
