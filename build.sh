@@ -56,10 +56,11 @@ cp /tmp/cecil/Mono.Cecil.dll .
 make
 sudo make install
 # provide these at another location as recommended by http://keithnordstrom.com/getting-the-monocov-profiler-to-link-on-ubuntu-13 and add symbolic links
-sudo cp /usr/local/lib/libmono-profiler-monocov.so /usr/lib/
+sudo cp /usr/local/lib/libmono-profiler-monocov.so /usr/lib/libmono-profiler-monocov.so
 sudo ln -s /usr/lib/libmono-profiler-monocov.so /usr/lib/libmono-profiler-monocov.so.0 
 sudo ln -s /usr/lib/libmono-profiler-monocov.so.0 /usr/lib/libmono-profiler-monocov.so.0.0.0
-ldd /usr/lib/libmono-profile-monocov.so #DEBUG
+ls -l /usr/lib/libmono* #DEBUG
+sudo ldd /usr/lib/libmono-profile-monocov.so #DEBUG
 popd
 
 xbuild /p:Configuration=Debug clrzmq4.mono.sln
