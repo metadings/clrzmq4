@@ -58,13 +58,15 @@ sudo make install
 # provide these at another location as recommended by http://keithnordstrom.com/getting-the-monocov-profiler-to-link-on-ubuntu-13 and add symbolic links
 if [ "$(sw_vers -productName)" == "Mac OS X" ] ; then
   MONOCOV_LIB_DIR=/usr/local/lib
+  LDD=ldd
 else
   MONOCOV_LIB_DIR=/usr/lib
+  LDD="otool -L"
   sudo cp /usr/local/lib/libmono-profiler-monocov.so ${MONOCOV_LIB_DIR}/libmono-profiler-monocov.so
 fi
 sudo ln -s ${MONOCOV_LIB_DIR}/libmono-profiler-monocov.so ${MONOCOV_LIB_DIR}/libmono-profiler-monocov.so.0 
 sudo ln -s ${MONOCOV_LIB_DIR}/libmono-profiler-monocov.so.0 ${MONOCOV_LIB_DIR}/libmono-profiler-monocov.so.0.0.0
-sudo ldd ${MONOCOV_LIB_DIR}/libmono-profiler-monocov.so #DEBUG
+sudo ${LDD} ${MONOCOV_LIB_DIR}/libmono-profiler-monocov.so #DEBUG
 popd
 
 xbuild /p:Configuration=Debug clrzmq4.mono.sln
@@ -78,6 +80,9 @@ LD_LIBRARY_PATH=${MONOCOV_LIB_DIR}:${LD_LIBRARY_PATH}
 mono --debug --profile=monocov:outfile=${COVFILE},+[ZeroMQ] ./testrunner/NUnit.ConsoleRunner.3.6.1/tools/nunit3-console.exe ./ZeroMQTest/bin/Debug/ZeroMQTest.dll
 
 monocov --export-xml=${COVFILE_XML} ${COVFILE}
+
+cat ${COVFILE_XML} # DEBUG
+
 REPO_COMMIT_AUTHOR=$(git show -s --pretty=format:"%cn")
 REPO_COMMIT_AUTHOR_EMAIL=$(git show -s --pretty=format:"%ce")
 REPO_COMMIT_MESSAGE=$(git show -s --pretty=format:"%s")
